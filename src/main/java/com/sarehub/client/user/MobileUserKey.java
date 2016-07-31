@@ -16,7 +16,7 @@ public class MobileUserKey implements UserKey {
 	}
 	
 	@Override
-	public String getTypeName() {
+	public String getKeyType() {
 		return "mobile";
 	}
 
