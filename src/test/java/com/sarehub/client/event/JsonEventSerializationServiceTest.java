@@ -2,6 +2,7 @@ package com.sarehub.client.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -65,7 +66,7 @@ public class JsonEventSerializationServiceTest {
 		eventData.addProperty("type", eventMock.getEventType());
 
 		JsonEventSerializationService service = new JsonEventSerializationService(gson, new JsonParser());
-		when(deserializerMock.deserialize(eventData)).thenReturn(eventMock);
+		when(deserializerMock.deserialize(any())).thenReturn(eventMock);
 		service.registerDeserializer("test", deserializerMock);
 		assertSame(eventMock, service.deserialize(gson.toJson(eventData)));
 	}
