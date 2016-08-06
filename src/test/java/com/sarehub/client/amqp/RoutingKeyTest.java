@@ -1,7 +1,9 @@
-package com.sarehub.client.util;
+package com.sarehub.client.amqp;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+
+import com.sarehub.client.amqp.RoutingKey;
 
 public class RoutingKeyTest {
 	

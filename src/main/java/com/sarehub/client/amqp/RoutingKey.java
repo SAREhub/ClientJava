@@ -1,4 +1,4 @@
-package com.sarehub.client.util;
+package com.sarehub.client.amqp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 /**
- * 
+ * Routing key is string in format: part1[.partN]
  */
 public class RoutingKey implements Iterable<String> {
 	
@@ -55,7 +55,6 @@ public class RoutingKey implements Iterable<String> {
 	public Iterator<String> iterator() {
 		return parts.iterator();
 	}
-
 	
 	@Override
 	public String toString() {
