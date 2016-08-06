@@ -1,16 +1,14 @@
 package com.sarehub.client.event;
 
-public abstract class BaseEventStreamSource<E extends Event> implements EventStreamSource<E> {
+public abstract class EventStreamSourceBase<E extends Event> implements EventStreamSource<E> {
 
 	protected EventStreamSink<E> sink;
 
-	public BaseEventStreamSource() {
+	public EventStreamSourceBase() {
 		sink = new NullEventStreamSink<E>();
 	}
 
 	public abstract void flow();
-
-	public abstract EventEnvelope<E> read();
 
 	public void pipe(EventStreamSink<E> sink) {
 		this.sink.onUnpipe(this);
