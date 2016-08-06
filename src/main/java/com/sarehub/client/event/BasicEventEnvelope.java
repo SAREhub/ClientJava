@@ -34,13 +34,13 @@ public class BasicEventEnvelope<E extends Event> implements EventEnvelope<E> {
 	}
 
 	@Override
-	public void markAsProcessed() {
+	public void markAsProcessedSuccessfull() {
 		processPromise.complete(this);
 	}
 
 	@Override
-	public boolean isProcessed() {
-		return processPromise.isDone();
+	public boolean isProcessedSuccessfull() {
+		return isProcessed() && !isCancelled() && !isProcessedExceptionally();
 	}
 
 	@Override
@@ -62,6 +62,11 @@ public class BasicEventEnvelope<E extends Event> implements EventEnvelope<E> {
 	@Override
 	public boolean isProcessedExceptionally() {
 		return processPromise.isCompletedExceptionally();
+	}
+
+	@Override
+	public boolean isProcessed() {
+		return processPromise.isDone();
 	}
 
 	@Override

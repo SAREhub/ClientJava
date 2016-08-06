@@ -1,5 +1,6 @@
 package com.sarehub.client.event;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.CompletableFuture;
@@ -27,19 +28,36 @@ public class BasicEventEnvelopeTest {
 	}
 
 	@Test
-	public void testProcessed() {
-		envelope.markAsProcessed();
+	public void testProcessedSuccessfull() {
+		envelope.markAsProcessedSuccessfull();
 		Mockito.verify(processPromise, Mockito.atLeastOnce()).complete(Mockito.same(envelope));
 		Mockito.when(processPromise.isDone()).thenReturn(true);
-		assertTrue(envelope.isProcessed());
+		Mockito.when(processPromise.isCancelled()).thenReturn(false);
+		Mockito.when(processPromise.isCompletedExceptionally()).thenReturn(false);
+		assertTrue(envelope.isProcessedSuccessfull());
 	}
 
 	@Test
 	public void testCancelled() {
 		envelope.markAsCancelled();
 		Mockito.verify(processPromise, Mockito.atLeastOnce()).cancel(false);
+		Mockito.when(processPromise.isDone()).thenReturn(true);
 		Mockito.when(processPromise.isCancelled()).thenReturn(true);
+		Mockito.when(processPromise.isCompletedExceptionally()).thenReturn(false);
 		assertTrue(envelope.isCancelled());
+		assertFalse(envelope.isProcessedSuccessfull());
+	}
+
+	@Test
+	public void testProcessedExceptionally() {
+		Exception e = new Exception();
+		envelope.markAsProcessedExceptionally(e);
+		Mockito.verify(processPromise, Mockito.atLeastOnce()).completeExceptionally(Mockito.same(e));
+		Mockito.when(processPromise.isDone()).thenReturn(true);
+		Mockito.when(processPromise.isCancelled()).thenReturn(false);
+		Mockito.when(processPromise.isCompletedExceptionally()).thenReturn(true);
+		assertTrue(envelope.isProcessedExceptionally());
+		assertFalse(envelope.isProcessedSuccessfull());
 	}
 
 }
