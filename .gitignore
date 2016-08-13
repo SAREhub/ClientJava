@@ -4,9 +4,6 @@
 
 *.class
 
-# Package Files #
-*.jar
-
 # virtual machine crash logs
 hs_err_pid*
 
