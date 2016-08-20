@@ -8,6 +8,6 @@
 hs_err_pid*
 
 /target/
-
+/bin/
 /.gradle/
 /build/
