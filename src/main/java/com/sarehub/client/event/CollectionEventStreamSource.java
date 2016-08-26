@@ -2,18 +2,18 @@ package com.sarehub.client.event;
 
 import java.util.Queue;
 
-public class CollectionEventStreamSource<E extends Event> extends EventStreamSourceBase<E> {
+public class CollectionEventStreamSource extends EventStreamSourceBase {
 
-	private Queue<EventEnvelope<E>> stream;
+	private Queue<EventEnvelope> stream;
 
-	public CollectionEventStreamSource(Queue<EventEnvelope<E>> stream) {
+	public CollectionEventStreamSource(Queue<EventEnvelope> stream) {
 		this.stream = stream;
 
 	}
 
 	@Override
 	public void flow() {
-		for (EventEnvelope<E> eventEnvelope : stream) {
+		for (EventEnvelope eventEnvelope : stream) {
 			sink.write(eventEnvelope);
 		}
 	}

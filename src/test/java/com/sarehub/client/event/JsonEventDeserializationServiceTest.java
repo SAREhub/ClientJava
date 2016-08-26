@@ -24,6 +24,9 @@ public class JsonEventDeserializationServiceTest {
 	@Mock
 	private Event eventMock;
 
+	@Mock
+	private EventType eventTypeMock;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -40,8 +43,10 @@ public class JsonEventDeserializationServiceTest {
 	public void testDeserialize() throws EventDeserializeException {
 		Gson gson = new Gson();
 		JsonObject eventData = new JsonObject();
-		when(eventMock.getEventType()).thenReturn("test");
-		eventData.addProperty("type", eventMock.getEventType());
+
+		when(eventTypeMock.getName()).thenReturn("test");
+		when(eventMock.getEventType()).thenReturn(eventTypeMock);
+		eventData.addProperty("type", eventMock.getEventType().getName());
 		when(deserializerMock.deserialize(Mockito.any(JsonObject.class))).thenReturn(eventMock);
 
 		service.registerDeserializer("test", deserializerMock);

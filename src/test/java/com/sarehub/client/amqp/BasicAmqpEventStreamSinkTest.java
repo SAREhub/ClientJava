@@ -11,13 +11,13 @@ import org.mockito.MockitoAnnotations;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.sarehub.client.event.Event;
+import com.sarehub.client.event.EventEnvelope;
 import com.sarehub.client.event.EventSerializationService;
 import com.sarehub.client.event.EventSerializeException;
-import com.sarehub.client.event.GenericEventEnvelope;
 
 public class BasicAmqpEventStreamSinkTest {
 
-	private BasicAmqpEventStreamSink<Event> sink;
+	private BasicAmqpEventStreamSink sink;
 
 	@Mock
 	private Channel channelMock;
@@ -29,7 +29,7 @@ public class BasicAmqpEventStreamSinkTest {
 	private Event eventMock;
 
 	@Mock
-	private GenericEventEnvelope eventEnvelopeMock;
+	private EventEnvelope eventEnvelopeMock;
 
 	@Mock
 	private AmqpEventEnvelopeProperties eventEnvelopePropertiesMock;
@@ -37,7 +37,7 @@ public class BasicAmqpEventStreamSinkTest {
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		sink = new BasicAmqpEventStreamSink<Event>(channelMock, "test", serializationServiceMock);
+		sink = new BasicAmqpEventStreamSink(channelMock, "test", serializationServiceMock);
 	}
 
 	@Test

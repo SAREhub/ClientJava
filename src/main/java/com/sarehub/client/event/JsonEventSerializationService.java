@@ -48,7 +48,7 @@ public class JsonEventSerializationService implements EventSerializationService<
 	 * @return
 	 */
 	public EventSerializer<JsonObject> getSerializer(Event event) {
-		return getSerializer(event.getEventType());
+		return getSerializer(event.getEventType().getName());
 	}
 
 	/**

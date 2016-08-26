@@ -6,12 +6,12 @@ package com.sarehub.client.event;
  * @param <E>
  *            Event Type
  */
-public interface EventStreamSink<E extends Event> {
+public interface EventStreamSink {
 
-	public abstract void write(EventEnvelope<E> eventEnvelope);
+	public abstract void write(EventEnvelope eventEnvelope);
 
-	public void onPipe(EventStreamSource<E> source);
+	public void onPipe(EventStreamSource source);
 
-	public void onUnpipe(EventStreamSource<E> source);
+	public void onUnpipe(EventStreamSource source);
 
 }

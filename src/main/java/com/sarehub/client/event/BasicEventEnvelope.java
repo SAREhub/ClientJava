@@ -6,36 +6,32 @@ import java.util.concurrent.CompletableFuture;
  * EventEnvelope is wrapper for event.
  * 
  * It's use 'promise' concept based on CompletableFuture from java 8 for process state notification
- * 
- * @param <E>
- *            Event type
  */
-public class BasicEventEnvelope<E extends Event> implements EventEnvelope<E> {
+public class BasicEventEnvelope implements EventEnvelope {
 
-	private E event;
+	private Event event;
 
 	private EventEnvelopeProperties properties;
 
-	private CompletableFuture<EventEnvelope<E>> processPromise;
+	private CompletableFuture<Void> processPromise;
 
-	public BasicEventEnvelope(E event, CompletableFuture<EventEnvelope<E>> processPromise) {
-		this(event, processPromise, null);
+	public BasicEventEnvelope(Event event) {
+		this(event, null);
 	}
 
-	public BasicEventEnvelope(E event, CompletableFuture<EventEnvelope<E>> processPromise, EventEnvelopeProperties properties) {
+	public BasicEventEnvelope(Event event, EventEnvelopeProperties properties) {
 		this.event = event;
-		this.processPromise = processPromise;
 		this.properties = properties;
 	}
 
 	@Override
-	public E getEvent() {
+	public Event getEvent() {
 		return event;
 	}
 
 	@Override
 	public void markAsProcessedSuccessfull() {
-		processPromise.complete(this);
+		processPromise.complete(null);
 	}
 
 	@Override
@@ -67,6 +63,10 @@ public class BasicEventEnvelope<E extends Event> implements EventEnvelope<E> {
 	@Override
 	public boolean isProcessed() {
 		return processPromise.isDone();
+	}
+
+	public void setProcessPromise(CompletableFuture<Void> processPromise) {
+		this.processPromise = processPromise;
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class JsonEventDeserializationService implements EventDeserializationServ
 	 * @return
 	 */
 	public EventDeserializer<JsonObject> getDeserializer(Event event) {
-		return getDeserializer(event.getEventType());
+		return getDeserializer(event.getEventType().getName());
 	}
 
 	/**

@@ -1,12 +1,11 @@
 package com.sarehub.client.event.user;
 
-import com.sarehub.client.event.Event;
 import com.sarehub.client.user.User;
 
 /**
  * Base class for user events
  */
-public abstract class UserEvent extends Event {
+public abstract class UserEvent {
 
 	private User user;
 
