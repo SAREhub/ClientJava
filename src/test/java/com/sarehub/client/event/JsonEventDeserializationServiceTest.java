@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
 
+import java.nio.ByteBuffer;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -50,7 +52,7 @@ public class JsonEventDeserializationServiceTest {
 		when(deserializerMock.deserialize(Mockito.any(JsonObject.class))).thenReturn(eventMock);
 
 		service.registerDeserializer("test", deserializerMock);
-		assertSame(eventMock, service.deserialize(gson.toJson(eventData)));
+		assertSame(eventMock, service.deserialize(ByteBuffer.wrap(gson.toJson(eventData).getBytes())));
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.sarehub.client.event;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
 
@@ -47,7 +47,7 @@ public class JsonEventSerializationServiceTest {
 		when(serializerMock.serialize(eventMock)).thenReturn(eventData);
 
 		service.registerSerializer("test", serializerMock);
-		assertEquals(gson.toJson(eventData), service.serialize(eventMock));
+		assertArrayEquals(gson.toJson(eventData).getBytes(), service.serialize(eventMock).array());
 	}
 
 }
