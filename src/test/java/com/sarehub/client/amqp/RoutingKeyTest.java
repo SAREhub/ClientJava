@@ -12,7 +12,7 @@ public class RoutingKeyTest {
 	@Test
 	public void createFromString() {
 		RoutingKey routingKey = new RoutingKey("part1.part2");
-		assertArrayEquals(new String[] { "part0", "part1" }, routingKey.getParts());
+		assertArrayEquals(new String[] { "part1", "part2" }, routingKey.getParts());
 	}
 
 	@Test

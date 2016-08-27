@@ -19,6 +19,7 @@ public class RoutingKey implements Iterable<String> {
 
 	public RoutingKey(List<String> parts) {
 		this.parts = parts;
+
 	}
 
 	public RoutingKey(String[] parts) {
@@ -26,7 +27,7 @@ public class RoutingKey implements Iterable<String> {
 	}
 
 	public RoutingKey(String raw) {
-		this(raw.split("."));
+		this(raw.split("\\."));
 	}
 
 	/**
