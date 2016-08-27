@@ -21,17 +21,19 @@ public class AmqpEventEnvelopeProperties implements EventEnvelopeProperties {
 
 	protected long deliveryTag;
 
-	public static AmqpEventEnvelopeProperties createFromDelivery(Delivery delivery) {
-		AmqpEventEnvelopeProperties properties = new AmqpEventEnvelopeProperties();
-		properties.exchangeName = delivery.getEnvelope().getExchange();
-		properties.routingKey = new RoutingKey(delivery.getEnvelope().getRoutingKey());
+	public AmqpEventEnvelopeProperties() {
 
-		properties.replyTo = delivery.getProperties().getReplyTo();
-		properties.correlationId = delivery.getProperties().getCorrelationId();
-		properties.priority = delivery.getProperties().getPriority();
+	}
 
-		properties.deliveryTag = delivery.getEnvelope().getDeliveryTag();
-		return properties;
+	public AmqpEventEnvelopeProperties(Delivery delivery) {
+
+		this.exchangeName = delivery.getEnvelope().getExchange();
+		this.routingKey = new RoutingKey(delivery.getEnvelope().getRoutingKey());
+		this.deliveryTag = delivery.getEnvelope().getDeliveryTag();
+
+		this.replyTo = delivery.getProperties().getReplyTo();
+		this.correlationId = delivery.getProperties().getCorrelationId();
+		this.priority = delivery.getProperties().getPriority();
 	}
 
 	public String getExchangeName() {
