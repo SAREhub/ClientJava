@@ -1,5 +1,7 @@
 package com.sarehub.client.amqp;
 
+import java.nio.ByteBuffer;
+
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.sarehub.client.event.Event;
@@ -15,9 +17,10 @@ public class BasicAmqpEventStreamSink implements EventStreamSink {
 
 	private Channel channel;
 	private String exchange;
-	private EventSerializationService<String> serializationService;
+	private EventSerializationService<ByteBuffer> serializationService;
 
-	public BasicAmqpEventStreamSink(Channel channel, String exchange, EventSerializationService<String> serializationService) {
+	public BasicAmqpEventStreamSink(Channel channel, String exchange,
+			EventSerializationService<ByteBuffer> serializationService) {
 		this.channel = channel;
 		this.exchange = exchange;
 		this.serializationService = serializationService;
@@ -27,7 +30,7 @@ public class BasicAmqpEventStreamSink implements EventStreamSink {
 	public void write(EventEnvelope eventEnvelope) {
 		try {
 			AmqpEventEnvelopeProperties properties = (AmqpEventEnvelopeProperties) eventEnvelope.getProperties();
-			String routingKey = properties.routingKey.toString();
+			String routingKey = properties.getRoutingKey().toString();
 			AMQP.BasicProperties amqpProperties = properties.toAmqpBasicProperties();
 			channel.basicPublish(exchange, routingKey, amqpProperties, serializeEvent(eventEnvelope.getEvent()));
 			eventEnvelope.markAsProcessedSuccessfull();
@@ -37,7 +40,7 @@ public class BasicAmqpEventStreamSink implements EventStreamSink {
 	}
 
 	private byte[] serializeEvent(Event event) throws EventSerializeException {
-		return serializationService.serialize(event).getBytes();
+		return serializationService.serialize(event).array();
 	}
 
 	@Override
