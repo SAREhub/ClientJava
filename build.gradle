@@ -17,6 +17,10 @@ repositories {
 apply from: 'gradle/publish.gradle'
 defaultTasks 'build'
 
+javadoc {
+	failOnError = false
+}
+
 dependencies {
     compile 'com.google.code.gson:gson:2.+'
 	compile 'com.rabbitmq:amqp-client:3.+'
