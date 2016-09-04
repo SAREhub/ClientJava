@@ -1,12 +1,13 @@
 package com.sarehub.client.amqp;
 
+import static org.mockito.Mockito.*;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -46,16 +47,16 @@ public class BasicAmqpEventStreamSinkTest {
 
 	@Test
 	public void testWrite() throws EventSerializeException, IOException {
-		Mockito.when(routingKeyMock.toString()).thenReturn("part1.part2");
-		Mockito.when(eventEnvelopePropertiesMock.getRoutingKey()).thenReturn(routingKeyMock);
-		Mockito.when(eventEnvelopePropertiesMock.toAmqpBasicProperties()).thenReturn(new BasicProperties());
-		Mockito.when(eventEnvelopeMock.getProperties()).thenReturn(eventEnvelopePropertiesMock);
-		Mockito.when(eventEnvelopeMock.getEvent()).thenReturn(eventMock);
-		Mockito.when(serializationServiceMock.serialize(eventMock)).thenReturn(ByteBuffer.wrap("{type: \"test\"}".getBytes()));
+		when(routingKeyMock.toString()).thenReturn("part1.part2");
+		when(eventEnvelopePropertiesMock.getRoutingKey()).thenReturn(routingKeyMock);
+		when(eventEnvelopePropertiesMock.toAmqpBasicProperties()).thenReturn(new BasicProperties());
+		when(eventEnvelopeMock.getProperties()).thenReturn(eventEnvelopePropertiesMock);
+		when(eventEnvelopeMock.getEvent()).thenReturn(eventMock);
+		when(serializationServiceMock.serialize(eventMock)).thenReturn(ByteBuffer.wrap("{type: \"test\"}".getBytes()));
 		sink.write(eventEnvelopeMock);
-		Mockito.verify(channelMock).basicPublish("test", "part1.part2", eventEnvelopePropertiesMock.toAmqpBasicProperties(),
+		verify(channelMock).basicPublish("test", "part1.part2", eventEnvelopePropertiesMock.toAmqpBasicProperties(),
 				"{type: \"test\"}".getBytes());
-		Mockito.verify(eventEnvelopeMock).markAsProcessedSuccessfull();
+		verify(eventEnvelopeMock).markAsProcessedSuccessfull();
 	}
 
 }
