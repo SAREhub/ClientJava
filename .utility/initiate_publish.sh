@@ -1,7 +1,10 @@
 #!/bin/bash
 # This script initiates the Gradle publishing task when pushes to master occur.
 # NOTE: Travis-CI can only publish SNAPSHOT versions.
-
+echo "REPO_SLUG: $TRAVIS_REPO_SLUG"
+echo "IS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
+echo "BRANCH: $TRAVIS_BRANCH"
+echo "TAG: $TRAVIS_TAG"
 if [ "$TRAVIS_REPO_SLUG" == "SAREhub/JavaClient" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ] && ["$TRAVIS_TAG"]; then
   if [[ "$TRAVIS_TAG" != *SNAPSHOT* ]]; then
       echo 'Travis can only publish snapshots'
@@ -20,3 +23,5 @@ if [ "$TRAVIS_REPO_SLUG" == "SAREhub/JavaClient" ] && [ "$TRAVIS_PULL_REQUEST" =
     return 1
   fi
 fi
+
+echo "Publish only on master branch and tag with SNAPSHOT"
