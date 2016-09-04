@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # This script initiates the Gradle publishing task when pushes to master occur.
 # NOTE: Travis-CI can only publish SNAPSHOT versions.
 
