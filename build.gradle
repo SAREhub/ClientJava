@@ -1,20 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
-
-buildscript {
-     repositories {
-         jcenter()
-     }
-     dependencies {
-         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-     }
- }
  
 repositories {
     mavenCentral()
 }
 
 apply from: 'gradle/publish.gradle'
+
 defaultTasks 'build'
 
 javadoc {
@@ -28,7 +20,6 @@ dependencies {
     testCompile 'junit:junit:4.+'
     testCompile 'org.mockito:mockito-core:2.+'
 }
-
 
 jacocoTestReport {
 	group = "Reporting"

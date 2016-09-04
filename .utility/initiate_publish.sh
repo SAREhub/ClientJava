@@ -13,7 +13,7 @@ if [ "$TRAVIS_REPO_SLUG" == "SAREhub/ClientJava" ] && [ "$TRAVIS_PULL_REQUEST" =
 
   echo -e "Starting publish to Sonatype...\n"
 
-  ./gradlew uploadArchives -PnexusUsername="${SONATYPE_USERNAME}" -PnexusPassword="${SONATYPE_PASSWORD}"
+  ./gradlew uploadArchives
   RETVAL=$?
 
   if [ $RETVAL -eq 0 ]; then

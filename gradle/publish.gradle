@@ -1,40 +1,57 @@
-apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'maven'
 
-modifyPom {
-      project {
-         name 'SAREhub Client'
-         groupId 'com.sarehub'
-         artifactId 'client'
-         version System.getenv('TRAVIS_TAG')
-         description 'Client for SAREhub Event Bus'
-         url 'https://sarehub.github.io/PHP_Client/'
-         scm {
-             url 'https://github.com/SAREhub/PHP_Client'
-             connection 'scm:https://github.com/SAREhub/PHP_Client.git'
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+group = "com.sarehub"
+archivesBaseName = "client"
+version = System.getenv('TRAVIS_TAG')
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
+      }
+
+      pom.project {
+        name 'SAREhub Client'
+        packaging 'jar'
+       	description 'Client for SAREhub Event Bus'
+        url 'https://sarehub.github.io/PHP_Client/'
+
+        scm {
+            url 'https://github.com/SAREhub/PHP_Client'
+            connection 'scm:https://github.com/SAREhub/PHP_Client.git'
          }
-         licenses {
-             license {
-                 name 'Apache License 2.0'
-                 url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                 distribution 'repo'
-             }
-         }
-         developers {
-             developer {
-                 id 'mararok'
-                 name 'Andrzej Wasiak'
-                 email 'mararok@gmail.com'
-             }
-         }
-     }
- }
- 
- extraArchive {
-     sources = true
-     tests = false
-     javadoc = true
- }
- 
- nexus {
-      sign = false
- }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+             id 'Mararok'
+             name 'Andrzej Wasiak'
+             email 'mararok@gmail.com'
+          }
+        }
+      }
+    }
+  }
+}
+
