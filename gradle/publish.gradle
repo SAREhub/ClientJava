@@ -1,0 +1,36 @@
+apply plugin: 'com.bmuschko.nexus'
+
+modifyPom {
+      project {
+         name 'SAREhub Client'
+         groupId 'com.sarehub'
+         artifactId 'client'
+         version System.getenv('TRAVIS_TAG')
+         description 'Client for SAREhub Event Bus'
+         url 'https://sarehub.github.io/PHP_Client/'
+         scm {
+             url 'https://github.com/SAREhub/PHP_Client'
+             connection 'scm:https://github.com/SAREhub/PHP_Client.git'
+         }
+         licenses {
+             license {
+                 name 'Apache License 2.0'
+                 url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                 distribution 'repo'
+             }
+         }
+         developers {
+             developer {
+                 id 'mararok'
+                 name 'Andrzej Wasiak'
+                 email 'mararok@gmail.com'
+             }
+         }
+     }
+ }
+ 
+ extraArchive {
+     sources = true
+     tests = false
+     javadoc = true
+ }

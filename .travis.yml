@@ -1,22 +1,22 @@
 sudo: false
 os:
- - linux
+- linux
 language: java
 jdk:
- - oraclejdk8
-
+- oraclejdk8
 before_install:
- - chmod +x gradlew
- 
+- chmod +x gradlew
 before_cache:
- - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
- - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-  
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
- directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
- 
-  
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 after_success:
- - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+- .utility/initiate-publish.sh
+env:
+  global:
+  - secure: EO2Fix/p4Xmoavok6zh5bBu96bz6uZRqOLggM70pdrUFzI6CYgJpWGxGGmA+0fj75L20ygg7XSeLWVQa5sTHNeKexQPLyf003fppRxbu4tguACYyfoppbWpxqsMfuhmP3BP1GKmR8A1CA1onsCnl/Y5qJV/fh+sviBwZaPIOdEX7C2lxQ/rxOMfh/xOAH00c+IAoubWh/OvJzqRn0XjEm2BzCuGJLTWi9AR2WN2C6DuuaRuoBtjPdkpfRC3DPl9SpY52Q5hRMg3M5v5SXixttaN8D8haFgU6BwW8Eeo9HO0mRO3ZGbQQXlVd6gfrdbK4PAXH6ASiOhUNPzusWpstjtuCibuTiFz73ROGFCaZ0EqqtPbt4zx5p7y1GRfQv1er/GD2Ynv9Z/xAZiuVnmZ/MlWOz7tm6DBaz6kM9TxfYtCi6bN3JD1wjoIYOBZ6JKdgMw/j5c2qF5IS/RrFEHq9rAnee4CGjEccTXY+A462XM5sc003+wWGBPNSaaC4s3YYXRKFwNjqQ+LQXXWwug7wpAbpRMZhPrh6Ye9HNRzCI+lrkWvhnd/+6F2mIkBuIszd82Vk2pFWgbq65pcMDXRahi5zNU/30ZzDc0IkaiqFZyax+JrKA7JXyFjd3Z/v4wPWpuQdbf2v9SEY5BPLAR+rO7nEv6NOwWO+vUPBOB4s3d4=
+  - secure: kPmLJYte1w4o5ydrC9PpGrZEoaBRTwjn1EPBgjgeByV1ONngetz9gCey7138Grk5+dGmPthe2wMvB9xSQl5j/Ltp7uyprt/u1E/VBDhqZXGArTXBOxjj6sHDfcxVnIxb7De3IaxhtLkxCIagYaDlyLLqfrBzsbJYIl/C2EO4yca+iAKw0oNzDJPn2zZ8nvHTWJS6+2Aqe0nZo7hWfEXd1VmT9R1kSR9bljcCe3ZidUz8+oA4boLX6s/1eFALau6khRqvVv8B0iHJf7qPxcQq/4xdm9zSQqRZFjOGzLgH2HK3+Y7nErFiDE+w3X4j1/pu61/WRKF+444MMn3NF65a3d76tsKOV1QNWQ8j/Tnpth1LXqaCKTc3lb2EX+VVlg6tMBfDDQPRKWpLj2nYExqpgkl+3mCHIgWyVz8dhLsV+koJCkoW28dS/trCBv3INHeUh+IJbB7XENTFA+1W2UnP2BVLmvjPhf3DbhMHPt33cwz4cVrAjZ7z4hFFRmNyITAB6vRVGHVR0WmVWap/cXwUR55j1MxmAK3jtD6NbTVogq7dwNx1l0ERKJ+CBL0vPkxp2yAUSPmmtICcynIGZxSwZRHz7j9baOZmX26rhyfkNOzj1tRQWC8mqHMphN39oEs3DFx8U2osCl5HK9A2c1jGECuXbMbFUv2I1AawbUBw2RY=
