@@ -3,10 +3,10 @@ package com.sarehub.client.event;
 /**
  * Interface for implements Event data deserialize to event objects
  * 
- * @param <T>
- *            Event data type for better support
+ * @param <E>
+ *            Event type
  */
-public interface EventDeserializer<T> {
+public interface EventDeserializer<ED> {
 
 	/**
 	 * Deserialize raw event data to Event object of specified Event class
@@ -15,6 +15,6 @@ public interface EventDeserializer<T> {
 	 *            Raw event data
 	 * @return
 	 */
-	public Event deserialize(T eventData);
+	public Event deserialize(ED eventData);
 
 }

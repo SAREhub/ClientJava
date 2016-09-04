@@ -2,16 +2,13 @@ package com.sarehub.client.event;
 
 /**
  * Event wrapper for store extra information about event
- * 
- * @param <E>
- *            Event type
  */
-public interface EventEnvelope<E extends Event> {
+public interface EventEnvelope {
 
 	/**
 	 * Returns event wrapped with envelope
 	 */
-	E getEvent();
+	Event getEvent();
 
 	/**
 	 * Marks envelope as processed, it can call some callback for notify about that.

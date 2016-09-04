@@ -1,16 +1,24 @@
 apply plugin: 'java'
-apply plugin: "jacoco"
+apply plugin: 'jacoco'
 
-jacocoTestReport {
-	group = "Reporting"
-    reports {
-        xml.enabled true
-        html.destination "${buildDir}/reports/coverage"
-    }
-}
-
+buildscript {
+     repositories {
+         jcenter()
+     }
+     dependencies {
+         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+     }
+ }
+ 
 repositories {
     mavenCentral()
+}
+
+apply from: 'gradle/publish.gradle'
+defaultTasks 'build'
+
+javadoc {
+	failOnError = false
 }
 
 dependencies {
@@ -20,3 +28,15 @@ dependencies {
     testCompile 'junit:junit:4.+'
     testCompile 'org.mockito:mockito-core:2.+'
 }
+
+
+jacocoTestReport {
+	group = "Reporting"
+    reports {
+        xml.enabled true
+        html.destination "${buildDir}/reports/coverage"
+    }
+}
+ 
+
+ 

@@ -1,6 +1,6 @@
 package com.sarehub.client.event;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.when;
 
@@ -22,6 +22,9 @@ public class JsonEventSerializationServiceTest {
 	@Mock
 	private Event eventMock;
 
+	@Mock
+	private EventType eventTypeMock;
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -38,12 +41,13 @@ public class JsonEventSerializationServiceTest {
 	public void testSerialize() throws EventSerializeException {
 		Gson gson = new Gson();
 		JsonObject eventData = new JsonObject();
-		when(eventMock.getEventType()).thenReturn("test");
-		eventData.addProperty("type", eventMock.getEventType());
+		when(eventTypeMock.getName()).thenReturn("test");
+		when(eventMock.getEventType()).thenReturn(eventTypeMock);
+		eventData.addProperty("type", eventMock.getEventType().getName());
 		when(serializerMock.serialize(eventMock)).thenReturn(eventData);
 
 		service.registerSerializer("test", serializerMock);
-		assertEquals(gson.toJson(eventData), service.serialize(eventMock));
+		assertArrayEquals(gson.toJson(eventData).getBytes(), service.serialize(eventMock).array());
 	}
 
 }

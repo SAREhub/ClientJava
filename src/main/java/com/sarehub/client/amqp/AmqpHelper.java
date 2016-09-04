@@ -7,6 +7,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class AmqpHelper {
+
 	public static Connection createConnection(AmqpConnectionConfig config) throws IOException, TimeoutException {
 		config.validate();
 		ConnectionFactory factory = new ConnectionFactory();

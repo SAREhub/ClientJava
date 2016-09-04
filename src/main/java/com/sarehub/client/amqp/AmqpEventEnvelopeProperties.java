@@ -1,20 +1,48 @@
 package com.sarehub.client.amqp;
 
 import com.rabbitmq.client.AMQP.BasicProperties;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.sarehub.client.event.EventEnvelopeProperties;
 
+/**
+ * Represents event envelope properties from AMQP message
+ */
 public class AmqpEventEnvelopeProperties implements EventEnvelopeProperties {
 
-	private RoutingKey routingKey;
+	protected String exchangeName;
 
-	private String replyTo;
+	protected RoutingKey routingKey;
 
-	private String correlationId;
+	protected String replyTo;
 
-	private int priority;
+	protected String correlationId;
 
-	private Envelope amqpDeliveryEnvelope;
+	protected int priority;
+
+	protected long deliveryTag;
+
+	public AmqpEventEnvelopeProperties() {
+
+	}
+
+	public AmqpEventEnvelopeProperties(Delivery delivery) {
+
+		this.exchangeName = delivery.getEnvelope().getExchange();
+		this.routingKey = new RoutingKey(delivery.getEnvelope().getRoutingKey());
+		this.deliveryTag = delivery.getEnvelope().getDeliveryTag();
+
+		this.replyTo = delivery.getProperties().getReplyTo();
+		this.correlationId = delivery.getProperties().getCorrelationId();
+		this.priority = delivery.getProperties().getPriority();
+	}
+
+	public String getExchangeName() {
+		return exchangeName;
+	}
+
+	public boolean hasExchangeName() {
+		return exchangeName != null;
+	}
 
 	public RoutingKey getRoutingKey() {
 		return routingKey;
@@ -28,20 +56,12 @@ public class AmqpEventEnvelopeProperties implements EventEnvelopeProperties {
 		return this.replyTo != null;
 	}
 
-	public void setReplyTo(String replyTo) {
-		this.replyTo = replyTo;
-	}
-
 	public String getCorrelationId() {
 		return correlationId;
 	}
 
 	public boolean hasCorrelationId() {
 		return this.correlationId != null;
-	}
-
-	public void setCorrelationId(String correlationId) {
-		this.correlationId = correlationId;
 	}
 
 	public int getPriority() {
@@ -52,16 +72,57 @@ public class AmqpEventEnvelopeProperties implements EventEnvelopeProperties {
 		return this.priority != 0;
 	}
 
-	public void setPriority(int priority) {
-		this.priority = priority;
+	public long getDeliveryTag() {
+		return deliveryTag;
 	}
 
-	public long getDeliveryTag() {
-		return amqpDeliveryEnvelope.getDeliveryTag();
+	public boolean hasDeliveryTag() {
+		return deliveryTag != 0;
 	}
 
 	public BasicProperties toAmqpBasicProperties() {
-		return null;
+		BasicProperties.Builder builder = new BasicProperties.Builder();
+		builder.replyTo(replyTo);
+		builder.correlationId(correlationId);
+		builder.priority(priority);
+		return builder.build();
+	}
+
+	public static class Builder {
+
+		private RoutingKey routingKey;
+		private String replyTo;
+		private String correlationId;
+		private int priority;
+
+		public Builder routingKey(RoutingKey routingKey) {
+			this.routingKey = routingKey;
+			return this;
+		}
+
+		public Builder replyTo(String replyTo) {
+			this.replyTo = replyTo;
+			return this;
+		}
+
+		public Builder correlationId(String correlationId) {
+			this.correlationId = correlationId;
+			return this;
+		}
+
+		public Builder priority(int priority) {
+			this.priority = priority;
+			return this;
+		}
+
+		public AmqpEventEnvelopeProperties build() {
+			AmqpEventEnvelopeProperties properties = new AmqpEventEnvelopeProperties();
+			properties.routingKey = routingKey;
+			properties.replyTo = replyTo;
+			properties.correlationId = correlationId;
+			properties.priority = priority;
+			return properties;
+		}
 
 	}
 }

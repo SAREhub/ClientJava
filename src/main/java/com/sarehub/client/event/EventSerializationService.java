@@ -12,7 +12,7 @@ public interface EventSerializationService<ED> {
 	 * Serialize event object to serialized form supported by service implementation
 	 * 
 	 * @param event
-	 * @return
+	 * @return serialized event data
 	 * @throws EventSerializeException
 	 */
 	public ED serialize(Event event) throws EventSerializeException;

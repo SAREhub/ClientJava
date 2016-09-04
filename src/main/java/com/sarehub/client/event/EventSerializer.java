@@ -1,7 +1,7 @@
 package com.sarehub.client.event;
 
-public interface EventSerializer<R> {
+public interface EventSerializer<ED> {
 
-	public R serialize(Event event);
+	public ED serialize(Event event);
 
 }

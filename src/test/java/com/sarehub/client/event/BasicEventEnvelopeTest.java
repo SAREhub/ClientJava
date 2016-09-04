@@ -17,20 +17,21 @@ public class BasicEventEnvelopeTest {
 	private Event eventMock;
 
 	@Mock
-	private CompletableFuture<EventEnvelope<Event>> processPromise;
+	private CompletableFuture<Void> processPromise;
 
-	private EventEnvelope<Event> envelope;
+	private BasicEventEnvelope envelope;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		envelope = new BasicEventEnvelope<Event>(eventMock, processPromise);
+		envelope = new BasicEventEnvelope(eventMock);
+		envelope.setProcessPromise(processPromise);
 	}
 
 	@Test
 	public void testProcessedSuccessfull() {
 		envelope.markAsProcessedSuccessfull();
-		Mockito.verify(processPromise, Mockito.atLeastOnce()).complete(Mockito.same(envelope));
+		Mockito.verify(processPromise, Mockito.atLeastOnce()).complete(null);
 		Mockito.when(processPromise.isDone()).thenReturn(true);
 		Mockito.when(processPromise.isCancelled()).thenReturn(false);
 		Mockito.when(processPromise.isCompletedExceptionally()).thenReturn(false);

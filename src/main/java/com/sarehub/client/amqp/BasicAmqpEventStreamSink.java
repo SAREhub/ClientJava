@@ -1,5 +1,8 @@
 package com.sarehub.client.amqp;
 
+import java.nio.ByteBuffer;
+
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.sarehub.client.event.Event;
 import com.sarehub.client.event.EventEnvelope;
@@ -8,28 +11,28 @@ import com.sarehub.client.event.EventSerializeException;
 import com.sarehub.client.event.EventStreamSink;
 import com.sarehub.client.event.EventStreamSource;
 
-public class BasicAmqpEventStreamSink<E extends Event> implements EventStreamSink<E> {
+public class BasicAmqpEventStreamSink implements EventStreamSink {
 
 	public final static String PUBLISH_EXCHANGE_PREFIX = "PC";
 
 	private Channel channel;
-	private String exchangeName;
-	private EventSerializationService<String> serializationService;
+	private String exchange;
+	private EventSerializationService<ByteBuffer> serializationService;
 
-	public BasicAmqpEventStreamSink(Channel channel, String exchangeName,
-			EventSerializationService<String> serializationService) {
+	public BasicAmqpEventStreamSink(Channel channel, String exchange,
+			EventSerializationService<ByteBuffer> serializationService) {
 		this.channel = channel;
-		this.exchangeName = exchangeName;
+		this.exchange = exchange;
 		this.serializationService = serializationService;
 	}
 
 	@Override
-	public void write(EventEnvelope<E> eventEnvelope) {
+	public void write(EventEnvelope eventEnvelope) {
 		try {
 			AmqpEventEnvelopeProperties properties = (AmqpEventEnvelopeProperties) eventEnvelope.getProperties();
 			String routingKey = properties.getRoutingKey().toString();
-			channel.basicPublish(exchangeName, routingKey, properties.toAmqpBasicProperties(),
-					serializeEvent(eventEnvelope.getEvent()));
+			AMQP.BasicProperties amqpProperties = properties.toAmqpBasicProperties();
+			channel.basicPublish(exchange, routingKey, amqpProperties, serializeEvent(eventEnvelope.getEvent()));
 			eventEnvelope.markAsProcessedSuccessfull();
 		} catch (Exception e) {
 			eventEnvelope.markAsProcessedExceptionally(e);
@@ -37,15 +40,15 @@ public class BasicAmqpEventStreamSink<E extends Event> implements EventStreamSin
 	}
 
 	private byte[] serializeEvent(Event event) throws EventSerializeException {
-		return serializationService.serialize(event).getBytes();
+		return serializationService.serialize(event).array();
 	}
 
 	@Override
-	public void onPipe(EventStreamSource<E> source) {
+	public void onPipe(EventStreamSource source) {
 	}
 
 	@Override
-	public void onUnpipe(EventStreamSource<E> source) {
+	public void onUnpipe(EventStreamSource source) {
 
 	}
 
@@ -53,7 +56,7 @@ public class BasicAmqpEventStreamSink<E extends Event> implements EventStreamSin
 		return channel;
 	}
 
-	public String getExchangeName() {
-		return exchangeName;
+	public String getExchange() {
+		return exchange;
 	}
 }

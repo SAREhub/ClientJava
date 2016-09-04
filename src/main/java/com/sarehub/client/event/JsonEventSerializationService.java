@@ -1,14 +1,15 @@
 package com.sarehub.client.event;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 /**
- * Json event serialization service, used Gson lib for serialize events.
+ * JSON event serialization service, used Gson lib for serialize events.
  */
-public class JsonEventSerializationService implements EventSerializationService<String> {
+public class JsonEventSerializationService implements EventSerializationService<ByteBuffer> {
 
 	private HashMap<String, EventSerializer<JsonObject>> serializerRegistry;
 	private Gson gson;
@@ -28,7 +29,7 @@ public class JsonEventSerializationService implements EventSerializationService<
 		serializerRegistry.put(eventType, serializer);
 	}
 
-	public String serialize(Event event) throws EventSerializeException {
+	public ByteBuffer serialize(Event event) throws EventSerializeException {
 		EventSerializer<JsonObject> serializer = getSerializer(event);
 		if (serializer == null) {
 			throw new EventSerializeException("Serializer for event type: " + event.getEventType() + " isn't registered");
@@ -38,7 +39,7 @@ public class JsonEventSerializationService implements EventSerializationService<
 		if (!eventData.has("type")) {
 			throw new EventSerializeException("Event data must contains member called 'type' for deserialize purpose");
 		}
-		return gson.toJson(eventData);
+		return ByteBuffer.wrap(gson.toJson(eventData).getBytes());
 	}
 
 	/**
@@ -48,7 +49,7 @@ public class JsonEventSerializationService implements EventSerializationService<
 	 * @return
 	 */
 	public EventSerializer<JsonObject> getSerializer(Event event) {
-		return getSerializer(event.getEventType());
+		return getSerializer(event.getEventType().getName());
 	}
 
 	/**

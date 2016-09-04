@@ -1,12 +1,14 @@
 package com.sarehub.client.event;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
-public class JsonEventDeserializationService implements EventDeserializationService<String> {
+public class JsonEventDeserializationService implements EventDeserializationService<ByteBuffer> {
 
 	private HashMap<String, EventDeserializer<JsonObject>> deserializerRegistry;
 	private JsonParser parser;
@@ -27,9 +29,9 @@ public class JsonEventDeserializationService implements EventDeserializationServ
 		deserializerRegistry.put(eventType, deserializer);
 	}
 
-	public Event deserialize(String eventData) throws EventDeserializeException {
+	public Event deserialize(ByteBuffer eventData) throws EventDeserializeException {
 		try {
-			JsonObject decodedEventData = parser.parse(eventData).getAsJsonObject();
+			JsonObject decodedEventData = parser.parse(new String(eventData.array(), "UTF-8")).getAsJsonObject();
 			String eventType = decodedEventData.get("type").getAsString();
 			if (eventType == null) {
 				throw new EventDeserializeException("Event data must contains member called 'type' ");
@@ -42,7 +44,7 @@ public class JsonEventDeserializationService implements EventDeserializationServ
 
 			return deserializer.deserialize(decodedEventData);
 
-		} catch (JsonParseException e) {
+		} catch (JsonParseException | UnsupportedEncodingException e) {
 			throw new EventDeserializeException(e);
 		}
 	}
@@ -54,7 +56,7 @@ public class JsonEventDeserializationService implements EventDeserializationServ
 	 * @return
 	 */
 	public EventDeserializer<JsonObject> getDeserializer(Event event) {
-		return getDeserializer(event.getEventType());
+		return getDeserializer(event.getEventType().getName());
 	}
 
 	/**
