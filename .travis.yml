@@ -15,7 +15,7 @@ cache:
   - "$HOME/.gradle/wrapper/"
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-- .utility/initiate-publish.sh
+- ./.utility/initiate_publish.sh
 env:
   global:
   - secure: EO2Fix/p4Xmoavok6zh5bBu96bz6uZRqOLggM70pdrUFzI6CYgJpWGxGGmA+0fj75L20ygg7XSeLWVQa5sTHNeKexQPLyf003fppRxbu4tguACYyfoppbWpxqsMfuhmP3BP1GKmR8A1CA1onsCnl/Y5qJV/fh+sviBwZaPIOdEX7C2lxQ/rxOMfh/xOAH00c+IAoubWh/OvJzqRn0XjEm2BzCuGJLTWi9AR2WN2C6DuuaRuoBtjPdkpfRC3DPl9SpY52Q5hRMg3M5v5SXixttaN8D8haFgU6BwW8Eeo9HO0mRO3ZGbQQXlVd6gfrdbK4PAXH6ASiOhUNPzusWpstjtuCibuTiFz73ROGFCaZ0EqqtPbt4zx5p7y1GRfQv1er/GD2Ynv9Z/xAZiuVnmZ/MlWOz7tm6DBaz6kM9TxfYtCi6bN3JD1wjoIYOBZ6JKdgMw/j5c2qF5IS/RrFEHq9rAnee4CGjEccTXY+A462XM5sc003+wWGBPNSaaC4s3YYXRKFwNjqQ+LQXXWwug7wpAbpRMZhPrh6Ye9HNRzCI+lrkWvhnd/+6F2mIkBuIszd82Vk2pFWgbq65pcMDXRahi5zNU/30ZzDc0IkaiqFZyax+JrKA7JXyFjd3Z/v4wPWpuQdbf2v9SEY5BPLAR+rO7nEv6NOwWO+vUPBOB4s3d4=
