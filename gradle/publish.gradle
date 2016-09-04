@@ -34,3 +34,7 @@ modifyPom {
      tests = false
      javadoc = true
  }
+ 
+ nexus {
+      sign = false
+ }
