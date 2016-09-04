@@ -4,7 +4,7 @@
 echo "REPO_SLUG: $TRAVIS_REPO_SLUG"
 echo "IS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 echo "TAG: $TRAVIS_TAG"
-if [ "$TRAVIS_REPO_SLUG" == "SAREhub/JavaClient" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && ["$TRAVIS_TAG"]; then
+if [ "$TRAVIS_REPO_SLUG" == "SAREhub/JavaClient" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && ["$TRAVIS_TAG" == ""]; then
   echo "Checking TAG format"
   if [[ "$TRAVIS_TAG" =~ ".+SNAPSHOT" ]]; then
       echo 'Travis can only publish snapshots'
