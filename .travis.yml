@@ -6,7 +6,6 @@ jdk:
 - oraclejdk8
 before_install:
 - chmod +x gradlew
-- chmod +x ./.utility/initiate_publish.sh
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
