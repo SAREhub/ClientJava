@@ -1,4 +1,23 @@
 apply plugin: 'maven'
+apply plugin: 'signing'
+
+def getTagName = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'describe', '--tags'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+def getVersion = { ->
+ 	def tagName = getTagName();                                 
+	if (tagName ==~ /(\d+\.\d+\.\d+)(-SNAPSHOT)*/) {                                                          
+    	return tagName;
+	}
+	
+	return false
+}
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -14,15 +33,44 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
+signing {
+    sign configurations.archives
+}
+
 group = "com.sarehub"
 archivesBaseName = "client"
-version = System.getenv('TRAVIS_TAG')
+version = ""
+gradle.taskGraph.whenReady { taskGraph ->
+  if(taskGraph.hasTask(':uploadArchives')) {
+   version = getVersion()
+	if (version == false) {
+		throw new RuntimeException("invalid tag name format: " + getTagName())
+	}
+	
+	if (!project.hasProperty("nexusUser") && !project.hasProperty("nexusPassword")) {
+		throw new RuntimeException("missed nexus property: nexusUser,nexusPassword");
+	}
+	
+	if (!project.hasProperty("keyId") && 
+		!project.hasProperty("password") && 
+		!project.hasProperty("secretKeyRingFile")) {
+		
+		throw new RuntimeException("missed signing property: keyId,password,secretKeyRingFile");
+	}
+  }
+}
 
 uploadArchives {
   repositories {
     mavenDeployer {
+   	 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: nexusUser, password: nexusPassword)
+      }
+    
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: System.getenv('SONATYPE_USERNAME'), password: System.getenv('SONATYPE_PASSWORD'))
+        authentication(userName: nexusUser, password: nexusPassword)
       }
 
       pom.project {
@@ -33,6 +81,7 @@ uploadArchives {
 
         scm {
             url 'https://github.com/SAREhub/PHP_Client'
+            developerConnection 'scm:git:ssh://github.com:SAREhub/PHP_Client.git'
             connection 'scm:https://github.com/SAREhub/PHP_Client.git'
          }
 

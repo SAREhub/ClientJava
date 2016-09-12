@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
- 
+
 repositories {
     mavenCentral()
 }
@@ -14,11 +14,11 @@ javadoc {
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.+'
-	compile 'com.rabbitmq:amqp-client:3.+'
-	compile 'org.apache.commons:commons-lang3:3.+'
-    testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:2.+'
+    compile 'com.google.code.gson:gson:[2.0,3.0)'
+	compile 'com.rabbitmq:amqp-client:[3.0,4.0)'
+	compile 'org.apache.commons:commons-lang3:[3.0,4.0)'
+    testCompile 'junit:junit:[4.0,5.0)'
+    testCompile 'org.mockito:mockito-core:[2.0,3.0)'
 }
 
 jacocoTestReport {
@@ -28,6 +28,4 @@ jacocoTestReport {
         html.destination "${buildDir}/reports/coverage"
     }
 }
- 
-
  
