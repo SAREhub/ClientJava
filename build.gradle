@@ -5,7 +5,9 @@ repositories {
     mavenCentral()
 }
 
-apply from: 'gradle/publish.gradle'
+if (System.getenv("TRAVIS") != 'true') {
+	apply from: 'gradle/publish.gradle'
+}
 
 defaultTasks 'build'
 
