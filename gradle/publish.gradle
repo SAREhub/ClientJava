@@ -47,18 +47,35 @@ gradle.taskGraph.whenReady { taskGraph ->
 		throw new RuntimeException("invalid tag name format: " + getTagName())
 	}
 	
-	if (!project.hasProperty("nexusUser") && !project.hasProperty("nexusPassword")) {
-		throw new RuntimeException("missed nexus property: nexusUser,nexusPassword");
+	Console console = System.console()
+	console.printf "\n\nWe have to sign some things in this build...\n\n"
+
+	if ( !project.hasProperty('signing.keyId') ) {
+		def id = console.readLine("PGP Key Id: ")
+		allprojects { ext."signing.keyId" = id }
+	}
+
+	if ( !project.hasProperty('signing.secretKeyRingFile') ) {
+		def file = console.readLine("PGP Secret Key Ring File (absolute path): ")
+		allprojects { ext."signing.secretKeyRingFile" = file }
+	}
+
+	if ( !project.hasProperty('signing.password') ) {
+		def password = console.readPassword("PGP Private Key Password: ")
+		allprojects { ext."signing.password" = password }
 	}
 	
-	if (!project.hasProperty("keyId") && 
-		!project.hasProperty("password") && 
-		!project.hasProperty("secretKeyRingFile")) {
-		
-		throw new RuntimeException("missed signing property: keyId,password,secretKeyRingFile");
+	if ( !project.hasProperty('nexusUser') ) {
+		throw new RuntimeException("nexusUser undefined");
 	}
+	
+	if ( !project.hasProperty('nexusPassword') ) {
+		throw new RuntimeException("nexusPassword undefined");
+	}	
   }
 }
+
+
 
 uploadArchives {
   repositories {
