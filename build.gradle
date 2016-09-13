@@ -5,7 +5,7 @@ repositories {
     mavenCentral()
 }
 
-if (System.getenv("TRAVIS") != 'true') {
+if (System.getenv("TRAVIS") != 'true' && hasProperty("nexusUser")) {
 	apply from: 'gradle/publish.gradle'
 }
 
