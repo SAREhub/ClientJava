@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -11,16 +12,19 @@ public class UserTest {
 
 	@Test
 	public void testFindKeyByType() {
-		EmailUserKey foundKey = new EmailUserKey("example@example.com");
-		User user = new User(Arrays.asList(foundKey, new CookieUserKey("test123")));
-		assertSame(foundKey, user.findKeyByType(EmailUserKey.class));
+		UserKey foundKey = StandardUserKeyFactory.create("test1", "abc");
+		List<UserKey> keys = Arrays.asList(foundKey, StandardUserKeyFactory.create("test2", "abc"));
+
+		User user = new User(keys);
+		assertSame(foundKey, user.findKeyByType("test1"));
 	}
 
 	@Test
 	public void testFindKeyByTypeWhenKeyCantBeFound() {
-		EmailUserKey foundKey = new EmailUserKey("example@example.com");
-		User user = new User(Arrays.asList(foundKey, new CookieUserKey("test123")));
-		assertNull(user.findKeyByType(MobileUserKey.class));
+		UserKey foundKey = StandardUserKeyFactory.create("test1", "abc");
+		List<UserKey> keys = Arrays.asList(foundKey, StandardUserKeyFactory.create("test2", "abc"));
+		User user = new User(keys);
+		assertNull(user.findKeyByType("test3"));
 	}
 
 }
